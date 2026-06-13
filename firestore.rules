@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidStudent(data) {
+      return data.keys().hasAll(['name', 'classroom', 'grades', 'status'])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.classroom is string && data.classroom.size() > 0 && data.classroom.size() <= 50
+        && data.status is string && (data.status == 'waiting' || data.status == 'published')
+        && data.grades is map;
+    }
+
+    // Students Collection
+    match /students/{studentId} {
+      // Anyone can read published students
+      // Admin page can read all (including waiting)
+      allow read: if true;
+
+      // Anyone can create a student (when adding student as visitor/admin)
+      allow create: if isValidStudent(incoming());
+
+      // Anyone can update or delete (to support admin actions without auth setup in developer playground)
+      allow update: if isValidStudent(incoming());
+      
+      allow delete: if true;
+    }
+  }
+}

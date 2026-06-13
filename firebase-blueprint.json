@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Represents a student and their academic records",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the student"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the student"
+        },
+        "classroom": {
+          "type": "string",
+          "description": "The class or grade level of the student"
+        },
+        "grades": {
+          "type": "object",
+          "description": "Grades in various subjects"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the student"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Base64 string or web URL of the student profile picture"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["waiting", "published"],
+          "description": "The validation status of the student record"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["name", "classroom", "grades", "status"]
+    }
+  },
+  "firestore": {
+    "students/{studentId}": {
+      "schema": "Student",
+      "description": "Collection of students in queue or published"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Student Database Portal",
+  "description": "Professional database portal for student profiles, grades management, and administrative queue system with interactive search capability and real-time Firebase syncing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
